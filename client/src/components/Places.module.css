@@ -1,0 +1,175 @@
+.places{
+    padding: 50px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #F7F8F8;
+      padding: 50px 20px;
+
+}
+h1 {
+    color: #24355A;
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+  
+p {
+max-width: 700px;
+font-size: 20px;
+}
+  
+.places_list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px 0;
+    justify-content: center;
+    gap: 20px;
+}
+a {
+    text-decoration: none;
+}
+.place {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 200px;
+    cursor: pointer;
+}
+  
+
+  
+.overlay {
+position: absolute;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.55);
+transition: 0.3s ease-in-out;
+}
+  
+.place_text {
+          position: relative;
+          color: white;
+}
+.place_text_icon{
+font-size: 45px;
+}
+  
+p {
+    font-weight: 600;
+}
+.place_text_icon:hover {
+    width: 80%;
+    height: 80%;
+        }
+.image{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  } 
+  .overlay:hover {
+    width: 70%;
+    height: 70%;
+  } 
+
+  @media (max-width:1400px) {
+    .places{
+        padding: 50px 60px;
+          padding: 50px 20px;
+    }
+    h1 {
+        font-size: 40px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+      
+    p {
+    max-width: 700px;
+    font-size: 20px;
+    }
+      
+
+
+    .place {
+  
+        width: 200px;
+        height: 190px;
+
+    }
+      
+
+    .place_text_icon{
+    font-size: 45px;
+    }
+      
+    p {
+        font-weight: 600;
+    }
+  }
+
+  
+  @media (max-width:901px) {
+    .places{
+        padding: 50px 60px;
+          padding: 50px 20px;
+    }
+    h1 {
+        font-size: 35px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+      
+    p {
+    max-width: 700px;
+    font-size: 18px;
+    }
+      
+
+
+    .place {
+  
+        width: 165px;
+        height: 155px;
+
+    }
+      
+
+    .place_text_icon{
+    font-size: 35px;
+    }
+  }
+
+   
+  @media (max-width:580px) {
+    .places{
+        padding: 50px 60px;
+          padding: 50px 20px;
+    }
+    h1 {
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+      
+    p {
+    max-width: 700px;
+    font-size: 15px;
+    }
+      
+
+
+    .place {
+  
+        width: 135px;
+        height: 130px;
+
+    }
+      
+
+    .place_text_icon{
+    font-size: 30px;
+    }
+  }
