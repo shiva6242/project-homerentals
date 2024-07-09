@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import './Register.css'
+import { auth, provider } from "../../firebase";
+import { signInWithPopup } from "firebase/auth";
+
+import {  useDispatch } from 'react-redux'
+import { userActions } from "../redux/state";
+
 const RegisterPage = () => {
+  const dispatch=useDispatch()
+
   const [errorMsg,setErrorMsg]=useState("")
 
   const [formData, setFormData] = useState({
@@ -11,7 +19,7 @@ const RegisterPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    profileImage: null,
+    profileImage: "",
   });
 
   const handleChange = (e) => {
@@ -34,7 +42,7 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
+   
     try {
       const register_form = new FormData()
 
@@ -42,7 +50,7 @@ const RegisterPage = () => {
         register_form.append(key, formData[key])
       }
     
-    const data =await (axios.post("https://homerentsbackend.onrender.com/auth/register",register_form))
+    const data =await (axios.post("http://localhost:3001/auth/register",register_form))
       if(data)
       {
         alert('regestration successfull...')
@@ -52,11 +60,26 @@ const RegisterPage = () => {
       setErrorMsg(err.response.data.message)
     }
   }
-
+ const signInWithGoogle=()=>{
+  signInWithPopup(auth,provider).then((result)=>{
+    console.log(result.user.photoURL);
+    axios.post("http://localhost:3001/auth/signin/",{
+      firstName:result.user.displayName,
+      email:result.user.email,
+      profileImage:result.user.photoURL
+    }).then((res)=>{
+      dispatch(userActions.setUser({
+        user:res.data.user,
+        token:res.data.token
+      }))
+      navigate('/'); 
+    })
+  }).catch((error)=>{console.log(error)})
+ }
   return (
     <div className="register">
       <div className="register_content">
-        <form className="register_content_form" onSubmit={handleSubmit}>
+        <form className="register_content_form" >
           <input
             className="register_input"
             placeholder="First Name"
@@ -114,10 +137,9 @@ const RegisterPage = () => {
             id="image"
             type="file"
             name="profileImage"
-            accept="image/*"
+           
             style={{ display: "none" }}
             onChange={handleChange}
-            required
           />
           <label htmlFor="image">
             <img src="/assets/addImage.png" alt="add profile photo" />
@@ -131,7 +153,10 @@ const RegisterPage = () => {
               style={{ maxWidth: "80px" }}
             />
           )} 
-          <button  className="button" type="submit" disabled={!passwordMatch}>REGISTER</button>
+                    <button  className="button1" onClick={signInWithGoogle}>signin with Google  </button>
+
+          <button  className="button1" onClick={handleSubmit} >REGISTER</button>
+         
         </form>
         <Link to="/login">Already have an account? Log In Here</Link>
       </div>
