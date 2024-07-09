@@ -15,7 +15,7 @@ const TripList = () => {
     try {
         useEffect(()=>{
             const fetchTripList=async()=>{
-                const response =await axios.get(`https://homerentsbackend.onrender.com/users/${userId}/trips`)
+                const response =await axios.get(`http://localhost:3001/users/${userId}/trips`)
                 if(response)
                 {
                     dispatch(userActions.setTripList(response.data))
@@ -35,6 +35,7 @@ const TripList = () => {
         <h1 className='h1_page'>Your trip List</h1>
         <div className='listings'>
             {
+                tripList.length==0?<h2>Your triplist is empty</h2>:
                 tripList?.map(({listingId,hostId,startDate,endDate,totalPrice,booking=true})=>(
                     <ListingCard
                     listingId={listingId._id}
@@ -53,7 +54,7 @@ const TripList = () => {
             }
 
         </div>
-        <Footer/>
+
         </>
     )
   )
