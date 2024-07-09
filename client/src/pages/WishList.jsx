@@ -13,7 +13,8 @@ const WishList = () => {
       <Navbar />
       <h1 className="h1_page">Your Wish List</h1>
       <div className="listings">
-        {wishList?.map(
+        {wishList.length===0?<h2>Your wishlist is empty</h2>:
+        wishList?.map(
           ({
             _id,
             creator,
@@ -39,7 +40,6 @@ const WishList = () => {
           )
         )}
       </div>
-      <Footer/>
     </>
   );
 };
