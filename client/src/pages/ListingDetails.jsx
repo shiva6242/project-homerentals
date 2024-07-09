@@ -10,13 +10,25 @@ const ListingDetails = () =>{
     const [loading,setLoading]=useState(true);
     const [listing,setListing]=useState({})
     const {listingId}=useParams();
+    const [errorMsg,setErrorMsg]=useState("")
 
+    const[containsSubstring,setcontainsSubstring]=useState(false);
+   console.log(containsSubstring)
     try {
         useEffect(()=>{
             async function fetchingList(){
-                const  response=await axios.get(`https://homerentsbackend.onrender.com/properties/${listingId}`);
+                const  response=await axios.get(`http://localhost:3001/properties/${listingId}`);
                 setListing(response.data.listing)
-                setLoading(false)   
+                console.log(response.data.listing)
+                  const mainString = response.data.listing.creator.profileImagePath;
+                  const substring = "public\\uploads\\";
+              
+                 const Substring = mainString.indexOf(substring) !== -1;
+                 setcontainsSubstring(Substring)
+                 console.log(containsSubstring)
+
+                setLoading(false)  
+ 
             }
             fetchingList();
         },[])
@@ -34,8 +46,17 @@ const ListingDetails = () =>{
         'Content-Type': 'application/json', // example header
       };
       const customerId=useSelector((state)=>state?.user?.user._id)
-
+      const user=useSelector((state)=>state?.user);
+      console.log(user)
       const handleSubmit = async () => {
+        if(startDate===""||endDate===""||dayCount<0)
+          {
+            setErrorMsg("select a proper date");
+            setTimeout(()=>{
+                setErrorMsg("")
+            },3000)
+            return ;
+          }
         try {
           const bookingForm = {
             customerId,
@@ -43,17 +64,29 @@ const ListingDetails = () =>{
             hostId: listing.creator._id,
             startDate: startString,
             endDate: endString,
-            totalPrice: listing.price * dayCount,
+            totalPrice:Math.floor((listing.price)/30 * dayCount),
           }
     
           const bookingData= JSON.stringify(bookingForm)
-          const respon=await axios.post("https://homerentsbackend.onrender.com/bookings/create",bookingData,{ 
+          const respon=await axios.post("http://localhost:3001/bookings/create",bookingData,{ 
             headers:headers
           })
-    
-          if (respon) {
-            navigate(`/${customerId}/trips`)
-          }
+          const subject = encodeURIComponent('Booking Inquiry');
+          const body = encodeURIComponent(
+            `I would like to book your listing ,these are the details...
+            streetAddress:${listing.streetAddress},
+            district:${listing.district},
+            city:${listing.city},
+            state:${listing.state},
+            bedroomCount:${listing.bedroomCount},
+            guestCount:${listing.guestCount},
+            bathroomCount:${listing.bathroomCount},
+            price:${listing.price}`
+);
+   const mailtoLink = `mailto:${listing.creator.email}?subject=${subject}&body=${body}`;
+
+    window.location.href = mailtoLink;
+          
         } catch (err) {
         }
       }
@@ -68,7 +101,7 @@ const ListingDetails = () =>{
         <div className='photos'>
             {
                 listing.listingPhotoPaths?.map((photo)=>(
-                    <img className='listing-img' src={`https://homerentsbackend.onrender.com/${photo.replace("public","")}`}
+                    <img className='listing-img' src={`http://localhost:3001/${photo.replace("public","")}`}
                     alt='listing-photo'/>
                 ))
             }
@@ -80,7 +113,8 @@ const ListingDetails = () =>{
         <hr />
 
         <div className='profileImage'>
-            <img src={`https://homerentsbackend.onrender.com/${listing.creator.profileImagePath.replace("public","")}`}/>
+           {containsSubstring===true?<img src={`http://localhost:3001/${listing.creator.profileImagePath.replace("public","")}`}/>
+           :<img src={listing.creator.profileImagePath} />}
             <h3 className='profile-h3'>owned by {listing.creator.firstName} {listing.creator.lastName}</h3>
 
         </div>
@@ -102,14 +136,18 @@ const ListingDetails = () =>{
                     ))}
                 </div>
             </div>
+            <h2 >The price of the listing: <span style={{color:'orange'}}>{listing.price}₹</span></h2>
             <div className='dateDiv'>
             <h2>How long do you want to stay?</h2>
+<center><h5 style={{color:'red'}}>{errorMsg}</h5></center>
             <div className='date'>
                 <h4 className='date-h4'>start date: </h4>
                 <input className='date-input' type='date' value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
                 <h4 className='date-h4'>end date: </h4>
                 <input className='date-input' type='date' value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
             </div>
+            
+
             <button type='button' className='date-button' onClick={handleSubmit}>Book Now</button>
         </div>
         </div>
