@@ -1,33 +1,17 @@
-// store.js
-import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import userSlice from './state';
-
-// Define persist config
-const persistConfig = {
-  key: 'root',
-  version: 1,
-  storage,
-};
-
-// Create a persisted reducer
-const persistedReducer = persistReducer(persistConfig, userSlice.reducer);
-
-// Configure the store with middleware and persisted reducer
-const store = configureStore({
-  reducer: {
-    user: persistedReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
-});
-
-// Create persistor
-const persistor = persistStore(store);
-
-export { store, persistor };
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './redux/store.js'; 
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+   <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>,
+  </React.StrictMode>,
+)
