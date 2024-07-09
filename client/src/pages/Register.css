@@ -52,7 +52,7 @@
       width: 22px;
   
     }
-   .button{
+    .button1{
       margin-top: 12px;
       border-radius: 30px;
   
@@ -63,9 +63,24 @@
       cursor: pointer;
       transition: 0.3s ease;
       color: white;
-      box-shadow: 0 0 10px 3px rgba(255, 255, 255);
   
     }
+    
+   .button{
+      margin-top: 12px;
+      border-radius: 30px;
+  
+    padding: 6px 15px;
+      /* background-color: #5939f8; */
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+      /* color: white; */
+      /* box-shadow: 0 0 10px 3px rgba(255, 255, 255); */
+  
+    }
+    
     a {
       text-decoration: none;
       color: white;
