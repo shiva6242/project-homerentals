@@ -52,7 +52,7 @@ const ListingCard = ({
   }
   const patchWishList=async()=>{
     try {
-      const response=await axios.patch(`https://homerentsbackend.onrender.com/users/${user?._id}/${listingId}`,{
+      const response=await axios.patch(`http://localhost:3001/users/${user?._id}/${listingId}`,{
         headers:headers
       })
      dispatch(userActions.setwishList(response.data.wishList))
@@ -79,7 +79,7 @@ const ListingCard = ({
                {listingPhotoPaths?.map((photo, index) => (
                 <div key={index} className="slides">
                   <img className='imageList'
-                    src={`https://homerentsbackend.onrender.com/${photo.replace("public","")}`}
+                    src={`http://localhost:3001/${photo.replace("public","")}`}
                   />
                   <div
                     className="prev-button"
@@ -111,7 +111,7 @@ const ListingCard = ({
           {!booking ? (
             <>
               <p className='listing-p'>
-                <span className='listing-span'>₹{price}</span> per day
+                <span className='listing-span'>₹{price}</span> per month
               </p>
             </>
           ) : (
@@ -120,7 +120,7 @@ const ListingCard = ({
                 {startDate} - {endDate}
               </p>
               <p  className='listing1-p'>
-                <span className='listing1-span'>${totalPrice}</span> total
+                <span className='listing1-span'>₹{totalPrice}</span> total
               </p>
             </>
           )}
