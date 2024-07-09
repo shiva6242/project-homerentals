@@ -11,7 +11,15 @@ const Navbar = () => {
     const [dropdownMenu, setDropdownMenu] = useState(false);
     const tokenUser= useSelector((state) => state.user);
     const user=tokenUser.user
-    
+    let containsSubstring=false;
+    console.log(user)
+    if(user){
+      const mainString = user.profileImagePath;
+      const substring = "public";
+  
+     containsSubstring = mainString.indexOf(substring) !== -1;
+     }
+     console.log(containsSubstring)
     const dispatch = useDispatch();
   
     const [search, setSearch] = useState("")
@@ -47,11 +55,15 @@ const Navbar = () => {
             <div>
             <IoMenu className='menu'/>
             {!user ? (
-                    (<FaUserCircle className='user'/>)          ) : (
-            <img className='navbar-profile' src={`https://homerentsbackend.onrender.com/${user.profileImagePath.replace( 
+                    (<FaUserCircle className='user'/>)          ) : (containsSubstring===true?
+            <img className='navbar-profile' src={`http://localhost:3001/${user.profileImagePath.replace( 
               "public",
               ""
             )}`}
+
+              alt="profile photo"
+              style={{ objectFit: "cover", borderRadius: "10%" }}
+            />: <img className='navbar-profile' src={user.profileImagePath}
 
               alt="profile photo"
               style={{ objectFit: "cover", borderRadius: "50%" }}
