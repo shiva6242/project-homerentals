@@ -15,7 +15,7 @@ const PropertyList = () => {
   const dispatch = useDispatch()
   const getPropertyList = async () => {
     try {
-        const response=await axios.get(`https://homerentsbackend.onrender.com/users/${user._id}/properties`)
+        const response=await axios.get(`http://localhost:3001/users/${user._id}/properties`)
       dispatch(userActions.setPropertyList(response.data))
       setLoading(false)
     } catch (err) {
@@ -31,7 +31,8 @@ const PropertyList = () => {
       <Navbar />
       <h1 className="h1_page">Your Property List</h1>
       <div className="listings">
-        {propertyList?.map(
+        {propertyList.length===0?<h3>Your property list is empty</h3>:
+        propertyList?.map(
           ({
             _id,
             creator,
