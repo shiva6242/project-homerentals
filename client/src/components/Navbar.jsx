@@ -87,7 +87,7 @@ const Navbar = () => {
             <Link to="/create-listing">Become A Host</Link>
 
             <Link
-              to="/login"
+              to="/"
               onClick={() => {
                 dispatch(userActions.resetUser());
               }}
